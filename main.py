@@ -45,22 +45,14 @@ for image_type, img in images.items():
         print(f"Erro ao carregar imagem {image_type}.")
         continue
 
-    # Resize original with padding
-    img_resized, orig_size = resize_with_padding(img, TARGET_WIDTH)
-
-    # Convert to grayscale for Otsu
-    gray = cv2.cvtColor(img_resized, cv2.COLOR_BGR2GRAY)
-
-    # Apply Otsu's thresholding
-    _, otsu = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
-    otsu_rgb = cv2.cvtColor(otsu, cv2.COLOR_GRAY2BGR)
-
     # Vary K for K-Means
     for k in [2, 3, 4]:
         start = time.time()
 
-        # Use original resized image (without padding) for K-Means to avoid black pixels
-        img_for_kmeans = cv2.resize(img, (TARGET_WIDTH, orig_size[1]))
+        # Resize image for K-Means processing
+        h, w = img.shape[:2]
+        new_h = int(h * TARGET_WIDTH / w)
+        img_for_kmeans = cv2.resize(img, (TARGET_WIDTH, new_h))
         pixel_values = img_for_kmeans.reshape((-1, 3))
         pixel_values = np.float32(pixel_values)
 
@@ -75,20 +67,14 @@ for image_type, img in images.items():
         kmeans_result = centers[labels]  # type: ignore
         kmeans_img = kmeans_result.reshape(img_for_kmeans.shape)
 
-        # Resize K-Means result with padding to match canvas
-        kmeans_padded, _ = resize_with_padding(kmeans_img, TARGET_WIDTH)
-
         # Print info
         print(f"Centróides para {image_type} com K={k}: {centers}")
         unique_colors = np.unique(kmeans_img.reshape(-1, 3), axis=0)
         print(f"Cores únicas (sem padding): {len(unique_colors)}")
 
-        # Combine: Original | Otsu | K-Means (all same height)
-        combined = np.hstack((img_resized, otsu_rgb, kmeans_padded))
-
-        # Save as PNG
+        # Save only the K-means result image
         save_path = f"results/{image_type}_k{k}.png"
-        cv2.imwrite(save_path, combined, [cv2.IMWRITE_PNG_COMPRESSION, 0])
+        cv2.imwrite(save_path, kmeans_img, [cv2.IMWRITE_PNG_COMPRESSION, 0])
         print(f"Salvo: {save_path}")
         print(f"Tempo K-Means: {time.time() - start:.2f}s\n")
 
