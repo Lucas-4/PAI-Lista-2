@@ -3,10 +3,10 @@ import numpy as np
 import os
 import time
 
-# Define image paths
-path_natural = "./images/strawberry.jpg"
-path_medical = "./images/xray.jpg"
-path_industrial = "./images/board.jpeg"
+# Define image paths (now in parent directory)
+path_natural = "../images/strawberry.jpg"
+path_medical = "../images/xray.jpg"
+path_industrial = "../images/board.jpeg"
 
 # Load images
 images = {

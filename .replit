@@ -34,12 +34,12 @@ args = "run_kmeans"
 name = "run_kmeans"
 author = "agent"
 
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "python main.py"
-
 [workflows.workflow.metadata]
 outputType = "console"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd questao1 && python main.py"
 
 [[workflows.workflow]]
 name = "test"
