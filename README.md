@@ -1,12 +1,4 @@
-# Image Processing with K-Means and Chain Code
 
-This project demonstrates image segmentation techniques using K-Means clustering, Otsu's thresholding, and chain code boundary representation for computer vision applications.
-
-## Features
-
-- **Otsu's Thresholding**: Automatic binary image segmentation
-- **K-Means Clustering**: Color-based image segmentation with k=2, 3, and 4 clusters
-- **Chain Code**: Boundary representation using 8-directional encoding
 
 ## Requirements
 
@@ -22,13 +14,7 @@ This project demonstrates image segmentation techniques using K-Means clustering
 2. Install the required dependencies:
 
 ```bash
-pip install opencv-python numpy matplotlib
-```
-
-Or if you have a requirements.txt:
-
-```bash
-pip install -r requirements.txt
+pip install opencv numpy matplotlib
 ```
 
 ## Project Structure
