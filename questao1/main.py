@@ -5,8 +5,8 @@ import time
 
 # Define image paths (now in parent directory)
 path_natural = "./images/strawberry.jpg"
-path_medical = "../images/xray.jpg"
-path_industrial = "../images/board.jpeg"
+path_medical = "./images/xray.jpg"
+path_industrial = "./images/board.jpeg"
 
 # Load images
 images = {

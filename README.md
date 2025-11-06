@@ -3,7 +3,6 @@
 - Python 3.x
 - OpenCV (cv2)
 - NumPy
-- Matplotlib (optional, for viewing results)
 
 ## Installation
 
@@ -12,14 +11,17 @@
 2. Install the required dependencies:
 
 ```bash
-pip install opencv numpy matplotlib
+pip install opencv numpy
 ```
 
 ## Project Structure
 
 ```
 .
-├── main.py                      # Main processing script
+├── questao1
+    ├── main.py
+├── questao2
+    ├── main.py
 ├── images/                      # Input images folder
 │   ├── strawberry.jpg          # Natural image (strawberry)
 │   ├── xray.jpg                # Medical image (x-ray)
@@ -38,9 +40,16 @@ pip install opencv numpy matplotlib
 ## Usage
 
 ### Running the Program
-
-Simply run the main script:
+For image segmentation:
 
 ```bash
-python main.py
+python questao1/main.py
 ```
+
+For chain code:
+
+```bash
+python questao2/main.py
+```
+Important!!
+Before running questao2/main.py, make sure to run questao1/main.py, because the chain code algorithm uses the segmented Otsu image from questao 1
