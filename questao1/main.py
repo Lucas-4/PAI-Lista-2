@@ -16,7 +16,7 @@ images = {
 }
 
 # Create results folder
-os.makedirs("results", exist_ok=True)
+os.makedirs("./results", exist_ok=True)
 
 # Target width for resized images (to speed up K-Means)
 TARGET_WIDTH = 400
