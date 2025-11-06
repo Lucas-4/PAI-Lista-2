@@ -49,3 +49,12 @@ author = 8876214
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "python main.py"
+
+[[workflows.workflow]]
+name = "a"
+mode = "sequential"
+author = 8876214
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python questao1/main.py"
