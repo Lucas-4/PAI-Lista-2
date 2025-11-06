@@ -134,25 +134,28 @@ def process_strawberry_chain_code():
     """Process strawberry image and extract boundary using chain code."""
     print("\n" + "="*60)
     print("CHAIN CODE - Strawberry Boundary Representation")
+    print("Using segmented Otsu image: results/natural_otsu.png")
     print("="*60 + "\n")
     
-    # Load and resize strawberry image
-    img_strawberry = cv2.imread(path_natural)
-    if img_strawberry is None:
-        print("Erro ao carregar imagem da morango.")
+    # Load the already-segmented Otsu strawberry image
+    otsu_binary = cv2.imread("results/natural_otsu.png", cv2.IMREAD_GRAYSCALE)
+    if otsu_binary is None:
+        print("Erro ao carregar imagem Otsu da morango.")
         return
     
-    # Resize for processing
-    img_resized = cv2.resize(img_strawberry, (TARGET_WIDTH, int(img_strawberry.shape[0] * TARGET_WIDTH / img_strawberry.shape[1])))
+    # Load original strawberry for visualization
+    img_strawberry = cv2.imread(path_natural)
+    if img_strawberry is None:
+        print("Erro ao carregar imagem original da morango.")
+        return
     
-    # Convert to grayscale
-    gray = cv2.cvtColor(img_resized, cv2.COLOR_BGR2GRAY)
+    # Resize original to match Otsu dimensions
+    h, w = img_strawberry.shape[:2]
+    new_h = int(h * TARGET_WIDTH / w)
+    img_resized = cv2.resize(img_strawberry, (TARGET_WIDTH, new_h))
     
-    # Apply Otsu's thresholding to get binary image
-    _, binary = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
-    
-    # Find contours
-    contours, _ = cv2.findContours(binary, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)  # type: ignore
+    # Find contours from the segmented Otsu image
+    contours, _ = cv2.findContours(otsu_binary, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)  # type: ignore
     
     if len(contours) == 0:
         print("Nenhum contorno encontrado.")
@@ -168,8 +171,8 @@ def process_strawberry_chain_code():
     img_boundary = img_resized.copy()
     cv2.drawContours(img_boundary, [largest_contour], -1, (0, 255, 0), 2)
     
-    # Create binary visualization with boundary
-    binary_rgb = cv2.cvtColor(binary, cv2.COLOR_GRAY2BGR)
+    # Create binary visualization with boundary using the loaded Otsu image
+    binary_rgb = cv2.cvtColor(otsu_binary, cv2.COLOR_GRAY2BGR)
     cv2.drawContours(binary_rgb, [largest_contour], -1, (0, 255, 0), 2)
     
     # Combine original with boundary and binary with boundary
